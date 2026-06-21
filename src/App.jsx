@@ -1,60 +1,36 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { AuthProvider } from './context/AuthContext'
-import ProtectedRoute from './routes/ProtectedRoute'
-
-import Home from './pages/public/Home'
-import BrowseTurfs from './pages/public/BrowseTurfs'
-import BookTurf from './pages/public/BookTurf'
-import LoginForm from './components/forms/LoginForm'
-
-import QTAdminLayout from './pages/quickturf-admin/QTAdminLayout'
-import QTDashboard from './pages/quickturf-admin/QTDashboard'
-import QTTurfs from './pages/quickturf-admin/QTTurfs'
-import QTBookings from './pages/quickturf-admin/QTBookings'
-
-import TALayout from './pages/turf-admin/TALayout'
-import TADashboard from './pages/turf-admin/TADashboard'
-import TASports from './pages/turf-admin/TASports'
-import TATimeSlots from './pages/turf-admin/TATimeSlots'
-import TAPackages from './pages/turf-admin/TAPackages'
-import TAMemberships from './pages/turf-admin/TAMemberships'
-import TABookings from './pages/turf-admin/TABookings'
-import TASettings from './pages/turf-admin/TASettings'
+import { useState } from "react";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import BrowseTurfs from "./pages/BrowseTurfs";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 export default function App() {
+  const [currentPage, setCurrentPage] = useState("home");
+
+  const navigate = (page) => {
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case "home": return <Home navigate={navigate} />;
+      case "browse": return <BrowseTurfs navigate={navigate} />;
+      case "about": return <About navigate={navigate} />;
+      case "contact": return <Contact navigate={navigate} />;
+      default: return <Home navigate={navigate} />;
+    }
+  };
+
   return (
-    <AuthProvider>
-      <Routes>
-        {/* Public */}
-        <Route path="/" element={<Home />} />
-        <Route path="/book" element={<BrowseTurfs />} />
-        <Route path="/book/:id" element={<BookTurf />} />
-        <Route path="/login" element={<LoginForm />} />
-
-        {/* QuickTurf Admin */}
-        <Route path="/qt-admin" element={
-          <ProtectedRoute requiredRole="quickturf_admin"><QTAdminLayout /></ProtectedRoute>
-        }>
-          <Route index element={<QTDashboard />} />
-          <Route path="turfs" element={<QTTurfs />} />
-          <Route path="bookings" element={<QTBookings />} />
-        </Route>
-
-        {/* Turf Admin */}
-        <Route path="/ta-admin" element={
-          <ProtectedRoute requiredRole="turf_admin"><TALayout /></ProtectedRoute>
-        }>
-          <Route index element={<TADashboard />} />
-          <Route path="sports" element={<TASports />} />
-          <Route path="slots" element={<TATimeSlots />} />
-          <Route path="packages" element={<TAPackages />} />
-          <Route path="memberships" element={<TAMemberships />} />
-          <Route path="bookings" element={<TABookings />} />
-          <Route path="settings" element={<TASettings />} />
-        </Route>
-
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </AuthProvider>
-  )
+    <div style={{ fontFamily: "'Segoe UI', sans-serif", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <Navbar currentPage={currentPage} navigate={navigate} />
+      <main style={{ flex: 1 }}>
+        {renderPage()}
+      </main>
+      <Footer navigate={navigate} />
+    </div>
+  );
 }
