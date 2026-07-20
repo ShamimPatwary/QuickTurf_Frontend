@@ -1,25 +1,31 @@
-import { Link } from 'react-router-dom'
-import { Zap } from 'lucide-react'
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav style={{
-      background: 'var(--dark)',
-      borderBottom: '3px solid var(--green)',
-      position: 'sticky', top: 0, zIndex: 200,
-    }}>
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', height: 64 }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Zap size={22} color="var(--green)" fill="var(--green)" />
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: 26, color: 'var(--white)', letterSpacing: 1 }}>
-            QUICK<span style={{ color: 'var(--green)' }}>TURF</span>
+    <header className="sticky top-0 z-40 border-b border-qt-line bg-white/95 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <Link to="/" className="flex items-center gap-2">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-qt-navy">
+            <span className="h-3 w-3 rounded-sm bg-qt-green" />
           </span>
+          <span className="font-display text-lg font-bold text-qt-navy">QuickTurf</span>
         </Link>
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <Link to="/book" className="btn btn-green btn-sm">Book Now</Link>
-          <Link to="/login" className="btn btn-outline btn-sm" style={{ color: 'var(--white)', borderColor: 'rgba(255,255,255,0.3)' }}>Admin Login</Link>
-        </div>
+        <nav className="flex items-center gap-6 text-sm font-medium text-qt-charcoal">
+          <Link to="/book" className="hover:text-qt-green transition-colors">
+            Book Now
+          </Link>
+          <Link to="/turf-admin/login" className="hover:text-qt-green transition-colors">
+            Turf Admin
+          </Link>
+          <Link
+            to="/admin/login"
+            className="rounded-lg bg-qt-navy px-4 py-2 text-white hover:bg-qt-navy-light transition-colors"
+          >
+            QuickTurf Admin
+          </Link>
+        </nav>
       </div>
-    </nav>
-  )
+    </header>
+  );
 }
