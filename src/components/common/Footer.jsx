@@ -1,17 +1,12 @@
-import { Zap } from 'lucide-react'
+import React from "react";
 
 export default function Footer() {
   return (
-    <footer style={{ background: 'var(--dark)', color: 'rgba(255,255,255,0.5)', padding: '32px 0', marginTop: 'auto' }}>
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Zap size={18} color="var(--green)" fill="var(--green)" />
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: 'var(--white)', letterSpacing: 1 }}>
-            QUICK<span style={{ color: 'var(--green)' }}>TURF</span>
-          </span>
-        </div>
-        <p style={{ fontSize: 13 }}>© {new Date().getFullYear()} QuickTurf. All rights reserved.</p>
+    <footer className="border-t border-qt-line bg-qt-mist">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-8 text-sm text-qt-charcoal/60 sm:flex-row">
+        <p>© {new Date().getFullYear()} QuickTurf. Book your turf in minutes.</p>
+        <p>Football · Cricket · and more</p>
       </div>
     </footer>
-  )
+  );
 }

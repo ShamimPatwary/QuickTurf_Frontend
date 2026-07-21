@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -108,4 +109,25 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+=======
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  outline-color: theme("colors.qt.green");
+}
+
+::selection {
+  background-color: theme("colors.qt.green");
+  color: white;
+>>>>>>> c5fd5a244d9ecefef589d68eb929d411295e850c
 }
