@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  outline-color: theme("colors.qt.green");
+}
+
+::selection {
+  background-color: theme("colors.qt.green");
+  color: white;
+}
