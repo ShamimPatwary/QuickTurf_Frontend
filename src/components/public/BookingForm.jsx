@@ -40,3 +40,26 @@ export default function BookingForm({ slotPrice, turfId, sportId, onSubmit, subm
       paid_amount: form.paid_amount ? parseFloat(form.paid_amount) : 0,
     });
   };
+
+  const discountedPrice = discount
+    ? Math.max(slotPrice - (slotPrice * discount.discount_percentage) / 100, 0)
+    : slotPrice;
+  const due = discountedPrice && form.paid_amount ? Math.max(discountedPrice - parseFloat(form.paid_amount || 0), 0) : discountedPrice;
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <Input label="Full name" name="customer_name" value={form.customer_name} onChange={handleChange} required />
+      <Input
+        label="Phone number"
+        name="customer_phone"
+        value={form.customer_phone}
+        onChange={handleChange}
+        placeholder="+8801XXXXXXXXX"
+        required
+      />
+
+      {discount && (
+        <div className="rounded-lg bg-qt-green/10 px-4 py-3 text-sm text-qt-green-dark">
+          🎉 {discount.membership_name} member — {discount.discount_percentage}% discount applied automatically
+        </div>
+      )}
