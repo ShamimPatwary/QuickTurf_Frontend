@@ -98,3 +98,32 @@ export default function BookingForm({ slotPrice, turfId, sportId, onSubmit, subm
         onChange={handleChange}
         placeholder="0"
       />
+      <Input
+        label="Transaction ID (if you've paid via bKash/Nagad)"
+        name="transaction_id"
+        placeholder="e.g. TXN-BKASH-9981"
+        value={form.transaction_id}
+        onChange={handleChange}
+      />
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-qt-charcoal">Notes (optional)</label>
+        <textarea
+          name="notes"
+          value={form.notes}
+          onChange={handleChange}
+          rows={3}
+          className="rounded-lg border border-qt-line px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-qt-green focus:border-qt-green outline-none transition"
+        />
+      </div>
+
+      <div className="flex items-center justify-between rounded-lg bg-qt-mist px-4 py-3 text-sm">
+        <span className="text-qt-charcoal/60">Due amount</span>
+        <span className="font-display font-semibold text-qt-red">৳{due ?? 0}</span>
+      </div>
+
+      <Button type="submit" variant="accent" fullWidth disabled={submitting}>
+        {submitting ? "Confirming booking..." : "Confirm Booking"}
+      </Button>
+    </form>
+  );
+}
