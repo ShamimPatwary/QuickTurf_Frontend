@@ -63,3 +63,38 @@ export default function BookingForm({ slotPrice, turfId, sportId, onSubmit, subm
           🎉 {discount.membership_name} member — {discount.discount_percentage}% discount applied automatically
         </div>
       )}
+
+      <Input
+        label="Email (optional)"
+        name="customer_email"
+        type="email"
+        value={form.customer_email}
+        onChange={handleChange}
+      />
+
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-qt-charcoal">Match type</label>
+        <select
+          name="match_type"
+          value={form.match_type}
+          onChange={handleChange}
+          className="rounded-lg border border-qt-line px-3.5 py-2.5 text-sm capitalize focus:ring-2 focus:ring-qt-green focus:border-qt-green outline-none transition"
+        >
+          {MATCH_TYPES.map((type) => (
+            <option key={type} value={type} className="capitalize">
+              {type}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <Input
+        label={`Paid amount (total: ৳${discountedPrice ?? 0})`}
+        name="paid_amount"
+        type="number"
+        step="0.01"
+        min="0"
+        value={form.paid_amount}
+        onChange={handleChange}
+        placeholder="0"
+      />
