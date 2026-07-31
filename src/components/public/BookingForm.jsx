@@ -34,3 +34,9 @@ export default function BookingForm({ slotPrice, turfId, sportId, onSubmit, subm
   }, [form.customer_phone, turfId, sportId]);
 
   const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit({
+      ...form,
+      paid_amount: form.paid_amount ? parseFloat(form.paid_amount) : 0,
+    });
+  };
