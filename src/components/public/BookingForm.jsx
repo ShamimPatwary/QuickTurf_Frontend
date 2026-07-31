@@ -16,3 +16,21 @@ export default function BookingForm({ slotPrice, turfId, sportId, onSubmit, subm
     transaction_id: "",
   });
   const [discount, setDiscount] = useState(null);
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  useEffect(() => {
+    const phone = form.customer_phone.trim();
+    if (phone.length < 8 || !turfId || !sportId) {
+      setDiscount(null);
+      return;
+    }
+    const timeout = setTimeout(() => {
+      checkMembershipDiscount(turfId, phone, sportId)
+        .then((res) => setDiscount(res.data.is_member ? res.data : null))
+        .catch(() => setDiscount(null));
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [form.customer_phone, turfId, sportId]);
+
+  const handleSubmit = (e) => {
