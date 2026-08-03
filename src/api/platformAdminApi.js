@@ -1,3 +1,9 @@
+/**
+ * Changes:
+ *  - createTurf now accepts a FormData object (multipart) instead of a plain
+ *    JSON payload, so images can be sent together with the turf fields.
+ *  - All other functions are unchanged.
+ */
 import { platformClient } from "./axiosClient";
 
 export const platformAdminLogin = (email, password) => {
@@ -9,12 +15,17 @@ export const platformAdminLogin = (email, password) => {
   });
 };
 
-export const createTurf = (data) => platformClient.post("/api/admin/turfs", data);
+/** Send as multipart/form-data so images can be included. */
+export const createTurf = (formData) =>
+  platformClient.post("/api/admin/turfs", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 
 export const listTurfs = () => platformClient.get("/api/admin/turfs");
 
 export const getTurf = (turfId) => platformClient.get(`/api/admin/turfs/${turfId}`);
 
+/** Edit still sends JSON — images are managed via the separate endpoints. */
 export const updateTurf = (turfId, data) => platformClient.put(`/api/admin/turfs/${turfId}`, data);
 
 export const deleteTurf = (turfId) => platformClient.delete(`/api/admin/turfs/${turfId}`);
