@@ -1,0 +1,71 @@
+<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0A0E1F" />
+      <stop offset="60%" stop-color="#101630" />
+      <stop offset="100%" stop-color="#16225C" />
+    </linearGradient>
+    <linearGradient id="pitch" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1F5C36" />
+      <stop offset="100%" stop-color="#143D24" />
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E8FFE0" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#E8FFE0" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0A0E1F" stop-opacity="0" />
+      <stop offset="100%" stop-color="#0A0E1F" stop-opacity="1" />
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="900" fill="url(#sky)" />
+
+  <g opacity="0.5">
+    <circle cx="200" cy="100" r="1.5" fill="#FFFFFF" />
+    <circle cx="340" cy="60" r="1" fill="#FFFFFF" />
+    <circle cx="480" cy="140" r="1.5" fill="#FFFFFF" />
+    <circle cx="620" cy="80" r="1" fill="#FFFFFF" />
+    <circle cx="900" cy="50" r="1.5" fill="#FFFFFF" />
+    <circle cx="1100" cy="120" r="1" fill="#FFFFFF" />
+    <circle cx="1300" cy="70" r="1.5" fill="#FFFFFF" />
+    <circle cx="1450" cy="150" r="1" fill="#FFFFFF" />
+    <circle cx="760" cy="110" r="1" fill="#FFFFFF" />
+    <circle cx="1500" cy="60" r="1.5" fill="#FFFFFF" />
+  </g>
+
+  <polygon points="0,560 1600,560 1600,900 0,900" fill="url(#pitch)" />
+
+  <g stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="3" fill="none">
+    <polygon points="180,900 1420,900 1050,560 550,560" />
+    <line x1="800" y1="560" x2="800" y2="900" />
+    <circle cx="800" cy="760" r="70" />
+    <polygon points="700,900 900,900 870,800 730,800" />
+  </g>
+
+  <g>
+    <rect x="60" y="240" width="14" height="320" fill="#0A0E1F" />
+    <rect x="20" y="200" width="94" height="50" rx="4" fill="#101630" stroke="#243176" stroke-width="2" />
+    <circle cx="67" cy="225" r="200" fill="url(#glow)" />
+
+    <rect x="1526" y="240" width="14" height="320" fill="#0A0E1F" />
+    <rect x="1486" y="200" width="94" height="50" rx="4" fill="#101630" stroke="#243176" stroke-width="2" />
+    <circle cx="1533" cy="225" r="200" fill="url(#glow)" />
+
+    <rect x="360" y="180" width="10" height="200" fill="#0A0E1F" />
+    <rect x="328" y="148" width="74" height="40" rx="4" fill="#101630" stroke="#243176" stroke-width="2" />
+    <circle cx="365" cy="168" r="150" fill="url(#glow)" opacity="0.6" />
+
+    <rect x="1230" y="180" width="10" height="200" fill="#0A0E1F" />
+    <rect x="1198" y="148" width="74" height="40" rx="4" fill="#101630" stroke="#243176" stroke-width="2" />
+    <circle cx="1235" cy="168" r="150" fill="url(#glow)" opacity="0.6" />
+  </g>
+
+  <g opacity="0.85">
+    <ellipse cx="700" cy="850" rx="22" ry="8" fill="#0A0E1F" opacity="0.4" />
+    <circle cx="700" cy="822" r="16" fill="#FFFFFF" />
+    <path d="M700 808 L692 818 L700 824 L708 818 Z" fill="#3CA458" />
+  </g>
+
+  <rect x="0" y="700" width="1600" height="200" fill="url(#fade)" />
+</svg>

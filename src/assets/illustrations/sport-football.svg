@@ -1,0 +1,26 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fbg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2E8245" />
+      <stop offset="100%" stop-color="#143D24" />
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="800" height="600" fill="url(#fbg)" />
+
+  <g stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="3" fill="none">
+    <polygon points="100,600 700,600 560,180 240,180" />
+    <line x1="400" y1="180" x2="400" y2="600" />
+    <circle cx="400" cy="430" r="60" />
+  </g>
+
+  <g transform="translate(400,300)">
+    <circle r="70" fill="#FFFFFF" />
+    <g fill="#0A0E1F">
+      <polygon points="0,-28 24,-9 15,20 -15,20 -24,-9" />
+      <polygon points="0,-70 22,-50 0,-30 -22,-50" />
+      <polygon points="61,-22 70,4 50,22 32,-3" />
+      <polygon points="38,56 9,68 -9,68 -38,56 -22,30 22,30" />
+      <polygon points="-61,-22 -32,-3 -50,22 -70,4" />
+    </g>
+  </g>
+</svg>
