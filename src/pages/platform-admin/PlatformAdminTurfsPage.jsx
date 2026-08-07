@@ -1,3 +1,8 @@
+/**
+ * CHANGED FILE: src/pages/platform-admin/PlatformAdminTurfsPage.jsx
+ * Changes: handleSubmit now receives (jsonPayload, formData) from the modal
+ *   and picks the right API call for create vs edit.
+ */
 import React, { useEffect, useState } from "react";
 import PlatformAdminLayout from "./PlatformAdminLayout";
 import Button from "../../components/common/Button";
@@ -35,14 +40,19 @@ export default function PlatformAdminTurfsPage() {
     setModalOpen(true);
   };
 
-  const handleSubmit = async (payload) => {
+  /**
+   * Modal calls onSubmit(jsonPayload, formData).
+   * For create: jsonPayload is null, formData is a FormData (multipart).
+   * For edit:   jsonPayload is a plain object, formData is null.
+   */
+  const handleSubmit = async (jsonPayload, formData) => {
     setSubmitting(true);
     try {
       if (editingTurf) {
-        const { turf_admin_email, turf_admin_password, ...updateData } = payload;
+        const { turf_admin_email, turf_admin_password, ...updateData } = jsonPayload;
         await updateTurf(editingTurf.id, updateData);
       } else {
-        await createTurf(payload);
+        await createTurf(formData);
       }
       setModalOpen(false);
       loadTurfs();
