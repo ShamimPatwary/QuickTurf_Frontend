@@ -26,67 +26,58 @@ export default function BookingForm({
   const [errors, setErrors] = useState({});
 
 
-const handleChange = (e) => {
-  const { name, value } = e.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  // Name validation
-  if (name === "customer_name") {
-    if (!/^[a-zA-Z\s]*$/.test(value)) {
-      return;
-    }
-  }
-
-
-  // Phone validation
-  if (name === "customer_phone") {
-    if (!/^\d*$/.test(value)) {
-      return;
-    }
-  }
-
-
-  // Paid amount validation
-  if (name === "paid_amount") {
-    if (!/^\d*\.?\d*$/.test(value)) {
-      return;
+    if (name === "customer_name") {
+      if (!/^[a-zA-Z\s]*$/.test(value)) {
+        return;
+      }
     }
 
-    const paid = Number(value);
-
-    if (paid > discountedPrice) {
-      setErrors((prev) => ({
-        ...prev,
-        paid_amount: `Paid amount cannot exceed ৳${discountedPrice}`,
-      }));
-    } 
-    else if (paid < 500 && value !== "") {
-      setErrors((prev) => ({
-        ...prev,
-        paid_amount: "Minimum payment is ৳500",
-      }));
-    } 
-    else {
-      setErrors((prev) => ({
-        ...prev,
-        paid_amount: "",
-      }));
+    if (name === "customer_phone") {
+      if (!/^\d*$/.test(value)) {
+        return;
+      }
     }
-  }
 
+    if (name === "paid_amount") {
+      if (!/^\d*\.?\d*$/.test(value)) {
+        return;
+      }
 
-  setForm({
-    ...form,
-    [name]: value,
-  });
+      const paid = Number(value);
 
+      if (paid > discountedPrice) {
+        setErrors((prev) => ({
+          ...prev,
+          paid_amount: `Paid amount cannot exceed ৳${discountedPrice}`,
+        }));
+      } else if (paid < 500 && value !== "") {
+        setErrors((prev) => ({
+          ...prev,
+          paid_amount: "Minimum payment is ৳500",
+        }));
+      } else {
+        setErrors((prev) => ({
+          ...prev,
+          paid_amount: "",
+        }));
+      }
+    }
 
-  if (name !== "paid_amount") {
-    setErrors({
-      ...errors,
-      [name]: "",
+    setForm({
+      ...form,
+      [name]: value,
     });
-  }
-};
+
+    if (name !== "paid_amount") {
+      setErrors({
+        ...errors,
+        [name]: "",
+      });
+    }
+  };
 
 
   useEffect(() => {
@@ -97,7 +88,6 @@ const handleChange = (e) => {
       return;
     }
 
-
     const timeout = setTimeout(() => {
       checkMembershipDiscount(turfId, phone, sportId)
         .then((res) =>
@@ -107,11 +97,9 @@ const handleChange = (e) => {
 
     }, 500);
 
-
     return () => clearTimeout(timeout);
 
   }, [form.customer_phone, turfId, sportId]);
-
 
 
   const discountedPrice = discount
@@ -123,7 +111,6 @@ const handleChange = (e) => {
     : slotPrice;
 
 
-
   const due =
     discountedPrice && form.paid_amount
       ? Math.max(
@@ -133,98 +120,82 @@ const handleChange = (e) => {
       : discountedPrice;
 
 
-
   const validateForm = () => {
     let newErrors = {};
 
-
-    // Name
     if (!form.customer_name.trim()) {
       newErrors.customer_name = "Name is required";
     }
-
 
     if (!/^[a-zA-Z\s]+$/.test(form.customer_name)) {
       newErrors.customer_name =
         "Name can contain only letters";
     }
 
-
-
-    // Phone
     if (!form.customer_phone) {
       newErrors.customer_phone =
         "Phone number is required";
     }
-
 
     if (!/^\d+$/.test(form.customer_phone)) {
       newErrors.customer_phone =
         "Phone number must contain only numbers";
     }
 
-
-
-    // Paid amount
     const paid = Number(form.paid_amount);
-
 
     if (!form.paid_amount) {
       newErrors.paid_amount =
         "Paid amount is required";
     }
 
-
     if (paid < 500) {
       newErrors.paid_amount =
         "Minimum payment is ৳500";
     }
-
 
     if (paid > discountedPrice) {
       newErrors.paid_amount =
         `Paid amount cannot exceed ৳${discountedPrice}`;
     }
 
-
-
-    // Transaction ID
     if (!form.transaction_id.trim()) {
       newErrors.transaction_id =
         "Transaction ID is required";
     }
 
-
     setErrors(newErrors);
-
 
     return Object.keys(newErrors).length === 0;
   };
 
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
-
 
     if (!validateForm()) {
       return;
     }
 
-
     onSubmit({
       ...form,
       paid_amount: parseFloat(form.paid_amount),
     });
-
   };
-
 
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4"
+      className="
+        w-full
+        max-w-full
+        flex
+        flex-col
+        gap-4
+        px-2
+        sm:px-0
+      "
     >
 
       <div>
@@ -237,12 +208,11 @@ const handleChange = (e) => {
         />
 
         {errors.customer_name && (
-          <p className="text-xs text-red-500 mt-1">
+          <p className="text-xs sm:text-sm text-red-500 mt-1">
             {errors.customer_name}
           </p>
         )}
       </div>
-
 
 
       <div>
@@ -256,22 +226,29 @@ const handleChange = (e) => {
         />
 
         {errors.customer_phone && (
-          <p className="text-xs text-red-500 mt-1">
+          <p className="text-xs sm:text-sm text-red-500 mt-1">
             {errors.customer_phone}
           </p>
         )}
       </div>
 
 
-
       {discount && (
-        <div className="rounded-lg bg-qt-green/10 px-4 py-3 text-sm text-qt-green-dark">
+        <div className="
+          rounded-lg
+          bg-qt-green/10
+          px-3
+          sm:px-4
+          py-3
+          text-xs
+          sm:text-sm
+          text-qt-green-dark
+        ">
           🎉 {discount.membership_name} member —
           {" "}
           {discount.discount_percentage}% discount applied automatically
         </div>
       )}
-
 
 
       <Input
@@ -283,8 +260,8 @@ const handleChange = (e) => {
       />
 
 
-
       <div className="flex flex-col gap-1.5">
+
         <label className="text-sm font-medium text-qt-charcoal">
           Match type
         </label>
@@ -293,7 +270,17 @@ const handleChange = (e) => {
           name="match_type"
           value={form.match_type}
           onChange={handleChange}
-          className="rounded-lg border border-qt-line px-3.5 py-2.5 text-sm capitalize"
+          className="
+            w-full
+            rounded-lg
+            border
+            border-qt-line
+            px-3.5
+            py-2.5
+            text-sm
+            sm:text-base
+            capitalize
+          "
         >
           {MATCH_TYPES.map((type) => (
             <option key={type} value={type}>
@@ -301,11 +288,12 @@ const handleChange = (e) => {
             </option>
           ))}
         </select>
+
       </div>
 
 
-
       <div>
+
         <Input
           label={`Paid amount (total: ৳${discountedPrice})`}
           name="paid_amount"
@@ -320,16 +308,17 @@ const handleChange = (e) => {
         />
 
         {errors.paid_amount && (
-          <p className="text-xs text-red-500 mt-1">
+          <p className="text-xs sm:text-sm text-red-500 mt-1">
             {errors.paid_amount}
           </p>
         )}
+
       </div>
 
 
 
-
       <div>
+
         <Input
           label="Transaction ID (bKash/Nagad/Rocket)"
           name="transaction_id"
@@ -340,16 +329,17 @@ const handleChange = (e) => {
         />
 
         {errors.transaction_id && (
-          <p className="text-xs text-red-500 mt-1">
+          <p className="text-xs sm:text-sm text-red-500 mt-1">
             {errors.transaction_id}
           </p>
         )}
+
       </div>
 
 
 
-
       <div>
+
         <label className="text-sm font-medium text-qt-charcoal">
           Notes (optional)
         </label>
@@ -359,14 +349,35 @@ const handleChange = (e) => {
           value={form.notes}
           onChange={handleChange}
           rows={3}
-          className="w-full rounded-lg border border-qt-line px-3.5 py-2.5"
+          className="
+            w-full
+            rounded-lg
+            border
+            border-qt-line
+            px-3.5
+            py-2.5
+            text-sm
+            sm:text-base
+          "
         />
+
       </div>
 
 
 
+      <div className="
+        flex
+        items-center
+        justify-between
+        gap-2
+        rounded-lg
+        bg-qt-mist
+        px-3
+        sm:px-4
+        py-3
+        text-sm
+      ">
 
-      <div className="flex items-center justify-between rounded-lg bg-qt-mist px-4 py-3 text-sm">
         <span className="text-qt-charcoal/60">
           Due amount
         </span>
@@ -374,6 +385,7 @@ const handleChange = (e) => {
         <span className="font-display font-semibold text-qt-red">
           ৳{due ?? 0}
         </span>
+
       </div>
 
 
