@@ -71,3 +71,28 @@ export default function TurfAdminLayout({ children, title }) {
             <p className="text-xs text-qt-charcoal/50">Turf Admin</p>
           </div>
         </div>
+
+        {/* Nav links */}
+        <nav className="flex-1 px-3 pt-3">
+          {navItems.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className={`mb-1 block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                location.pathname == item.to
+                  ? "bg-qt-green text-white"
+                  : "text-qt-charcoal hover:bg-qt-mist"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <button
+          onClick={handleLogout}
+          className="mx-3 mb-5 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-qt-red hover:bg-qt-red/10"
+        >
+          Log out
+        </button>
+      </aside>
