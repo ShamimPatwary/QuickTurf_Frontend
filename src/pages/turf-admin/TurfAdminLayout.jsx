@@ -40,3 +40,34 @@ export default function TurfAdminLayout({ children, title }) {
     logout();
     navigate("/turf-admin/login");
   };
+
+   const logoUrl = turf?.images?.[0]?.image_url ?? null;
+
+  return (
+    <div className="flex min-h-screen bg-qt-mist">
+      {/* ── Sidebar ─────────────────────────────────────────────── */}
+      <aside className="hidden w-60 flex-col border-r border-qt-line bg-white sm:flex">
+
+        {/* Turf identity block */}
+        <div className="flex items-center gap-3 border-b border-qt-line px-4 py-4">
+          {/* Logo / avatar */}
+          {logoUrl ? (
+            <img
+              src={logoUrl}
+              alt={turf?.name ?? "Turf logo"}
+              className="h-10 w-10 rounded-lg object-cover flex-shrink-0 border border-qt-line"
+            />
+          ) : (
+            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-qt-navy text-white text-sm font-bold">
+              {turf?.name?.[0]?.toUpperCase() ?? "T"}
+            </div>
+          )}
+
+          {/* Turf name */}
+          <div className="min-w-0">
+            <p className="truncate font-display text-sm font-bold text-qt-navy leading-tight">
+              {turf?.name ?? "Loading…"}
+            </p>
+            <p className="text-xs text-qt-charcoal/50">Turf Admin</p>
+          </div>
+        </div>
