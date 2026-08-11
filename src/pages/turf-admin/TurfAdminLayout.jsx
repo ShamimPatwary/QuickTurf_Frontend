@@ -22,3 +22,21 @@ const navItems = [
   { to: "/turf-admin/bookings",    label: "Bookings" },
   { to: "/turf-admin/settings",    label: "Settings" },
 ];
+
+export default function TurfAdminLayout({ children, title }) {
+  const { logout } = useTurfAdminAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [turf, setTurf] = useState(null);
+
+  useEffect(() => {
+    getMyTurf()
+      .then((res) => setTurf(res.data))
+      .catch(() => {}); // silently ignore if the call fails
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/turf-admin/login");
+  };
