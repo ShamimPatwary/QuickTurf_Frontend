@@ -96,3 +96,32 @@ export default function TurfAdminLayout({ children, title }) {
           Log out
         </button>
       </aside>
+
+      {/* ── Mobile top bar (turf name only, no sidebar) ─────────── */}
+      <div className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between border-b border-qt-line bg-white px-4 py-3 sm:hidden">
+        <div className="flex items-center gap-2">
+          {logoUrl ? (
+            <img src={logoUrl} alt="" className="h-8 w-8 rounded-md object-cover border border-qt-line" />
+          ) : (
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-qt-navy text-white text-xs font-bold">
+              {turf?.name?.[0]?.toUpperCase() ?? "T"}
+            </div>
+          )}
+          <span className="font-display text-sm font-bold text-qt-navy">
+            {turf?.name ?? "Turf Admin"}
+          </span>
+        </div>
+        <button onClick={handleLogout} className="text-xs font-medium text-qt-red">
+          Log out
+        </button>
+      </div>
+
+      {/* ── Main content ────────────────────────────────────────── */}
+      <main className="flex-1 px-6 py-8 pt-20 sm:pt-8 sm:px-10">
+        <h1 className="font-display text-2xl font-bold text-qt-navy">{title}</h1>
+        <div className="mt-6">{children}</div>
+      </main>
+    </div>
+  );
+}
+
