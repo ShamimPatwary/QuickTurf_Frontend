@@ -4,6 +4,8 @@ import Footer from "../../components/common/Footer";
 import Loader from "../../components/common/Loader";
 import EmptyState from "../../components/common/EmptyState";
 import TurfCard from "../../components/public/TurfCard";
+import DarkFooter from "../../components/common/DarkFooter";
+import DarkNavbar from "../../components/common/DarkNavbar";
 import { browseTurfs } from "../../api/publicApi";
 
 export default function TurfListPage() {
@@ -18,8 +20,9 @@ export default function TurfListPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar />
-      <main className="flex-1 mx-auto w-full max-w-6xl px-6 py-12">
+      {/*<Navbar /> */}
+      <DarkNavbar/>
+      <main className="mt-20 flex-1 mx-auto w-full max-w-6xl px-6 py-12">
         <h1 className="font-display text-3xl font-bold text-qt-navy">All Turfs</h1>
         <p className="mt-2 text-qt-charcoal/60">Browse every turf available on QuickTurf.</p>
 
@@ -37,7 +40,8 @@ export default function TurfListPage() {
           )}
         </div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
+      <DarkFooter />
     </div>
   );
 }

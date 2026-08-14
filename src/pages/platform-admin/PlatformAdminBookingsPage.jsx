@@ -23,9 +23,32 @@ export default function PlatformAdminBookingsPage() {
       {!loading && bookings.length === 0 && (
         <EmptyState title="No bookings yet" description="Bookings from all turfs will appear here." />
       )}
-      {!loading && bookings.length > 0 && (
-        <div className="overflow-x-auto rounded-xl border border-qt-line bg-white">
-          <table className="w-full text-left text-sm">
+{!loading && bookings.length > 0 && (
+        <div className="rounded-xl border border-qt-line bg-white">
+          {/* ── Mobile card list ─────────────────────────────────── */}
+          <div className="divide-y divide-qt-line sm:hidden bg-white">
+            {bookings.map((b) => (
+              <div key={b.id} className="p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-mono text-qt-navy text-sm">#{b.id}</p>
+                    <p className="mt-0.5 font-medium text-qt-navy break-words">{b.customer_name}</p>
+                    <p className="mt-0.5 text-xs text-qt-charcoal/70">Turf #{b.turf_id}</p>
+                  </div>
+                  <div className="flex-shrink-0">
+                    <Badge color={paymentColor[b.payment_status]}>{b.payment_status}</Badge>
+                  </div>
+                </div>
+                <div className="mt-2 flex items-center justify-between gap-2 text-sm">
+                  <span className="text-qt-charcoal/70">{b.booking_date}</span>
+                  <span className="font-semibold text-qt-navy">৳{b.total_amount}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ── Desktop table ────────────────────────────────────── */}
+          <table className="hidden min-w-[640px] w-full text-left text-sm sm:table">
             <thead className="bg-qt-mist text-xs uppercase tracking-wide text-qt-charcoal/60">
               <tr>
                 <th className="px-4 py-3">Booking ID</th>
