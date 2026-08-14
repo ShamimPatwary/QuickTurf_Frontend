@@ -11,12 +11,18 @@ import HomePageV2 from "./pages/public/HomePageV2";
 import BookNowPage from "./pages/public/BookNowPage";
 import TurfListPage from "./pages/public/TurfListPage";
 import TurfDetailPage from "./pages/public/TurfDetailPage";
+import PaymentSuccessPage from "./pages/public/paymentSuccessPage";
+import PaymentFailPage from "./pages/public/paymentFailPage";
+import BookingPaymentInfoPage from "./pages/public/BookingPaymentInfoPage";
 import BookingConfirmPage from "./pages/public/BookingConfirmPage";
+import MembershipConfirmPage from "./pages/public/MembershipConfirmPage";
+import PackageInfoPage from "./pages/public/PackageInfoPage";
 import InvoicePage from "./pages/public/InvoicePage";
 
 import PlatformAdminLoginPage from "./pages/platform-admin/PlatformAdminLoginPage";
 import PlatformAdminTurfsPage from "./pages/platform-admin/PlatformAdminTurfsPage";
 import PlatformAdminBookingsPage from "./pages/platform-admin/PlatformAdminBookingsPage";
+import PlatformAdminMessagesPage from "./pages/platform-admin/PlatformAdminMessagesPage";
 
 import TurfAdminLoginPage from "./pages/turf-admin/TurfAdminLoginPage";
 import TurfAdminDashboardPage from "./pages/turf-admin/TurfAdminDashboardPage";
@@ -27,6 +33,12 @@ import TurfAdminMembershipsPage from "./pages/turf-admin/TurfAdminMembershipsPag
 import TurfAdminMembersPage from "./pages/turf-admin/TurfAdminMembersPage";
 import TurfAdminBookingsPage from "./pages/turf-admin/TurfAdminBookingsPage";
 import TurfAdminSettingsPage from "./pages/turf-admin/TurfAdminSettingsPage";
+
+import About from "./pages/public/About";
+import HowItWorks from "./pages/public/HowItWorks";
+import Contact from "./pages/public/Contact";
+import PrivacyPolicy from "./pages/public/PrivacyPolicy";
+import Terms from "./pages/public/Terms";
 
 export default function App() {
   return (
@@ -39,14 +51,23 @@ export default function App() {
           <Route path="/book" element={<BookNowPage />} />
           <Route path="/turfs" element={<TurfListPage />} />
           <Route path="/turfs/:turfId" element={<TurfDetailPage />} />
+          <Route path="/turfs/:turfId/payment-info" element={<BookingPaymentInfoPage />} />
           <Route path="/turfs/:turfId/book" element={<BookingConfirmPage />} />
+          <Route path="/membership/confirm" element={<MembershipConfirmPage />} />
+          <Route path="/package/info" element={<PackageInfoPage />} />
           <Route path="/invoice/:bookingId" element={<InvoicePage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/how-it-works" element={<HowItWorks />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<Terms />} />
 
           {/* Platform Admin */}
           <Route path="/admin/login" element={<PlatformAdminLoginPage />} />
           <Route element={<ProtectedPlatformAdminRoute />}>
             <Route path="/admin/turfs" element={<PlatformAdminTurfsPage />} />
             <Route path="/admin/bookings" element={<PlatformAdminBookingsPage />} />
+            <Route path="/admin/messages" element={<PlatformAdminMessagesPage />} />
           </Route>
 
           {/* Turf Admin */}
