@@ -51,8 +51,66 @@ function ExpiryCell({ dateStr }) {
 
 export default function TurfTable({ turfs, onEdit, onDelete, onToggleStatus }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-qt-line">
-      <table className="w-full text-left text-sm">
+    <div className="rounded-xl border border-qt-line">
+      {/* ── Mobile card list ─────────────────────────────────────── */}
+      <div className="divide-y divide-qt-line sm:hidden">
+        {turfs.map((turf) => {
+          const days = daysUntil(turf.subscription_due_date);
+          const rowWarning = days !== null && days <= 5 && days >= 0 && turf.status === "active";
+          const rowExpired = days !== null && days < 0 && turf.status === "active";
+
+          return (
+            <div
+              key={turf.id}
+              className={
+                rowExpired
+                  ? "bg-qt-red/5 p-4"
+                  : rowWarning
+                  ? "bg-amber-50 p-4"
+                  : "p-4"
+              }
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-medium text-qt-navy break-words">{turf.name}</p>
+                  <p className="mt-0.5 text-xs text-qt-charcoal/60 break-words">{turf.address}</p>
+                  {turf.phone && (
+                    <p className="mt-0.5 text-xs text-qt-charcoal/60">{turf.phone}</p>
+                  )}
+                </div>
+                <div className="flex-shrink-0">
+                  <TurfStatusBadge
+                    status={turf.status}
+                    subscriptionDueDate={turf.subscription_due_date}
+                  />
+                </div>
+              </div>
+
+              <div className="mt-2 flex items-center justify-between gap-2">
+                <ExpiryCell dateStr={turf.subscription_due_date} />
+              </div>
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Button variant="ghost" onClick={() => onEdit(turf)}>
+                  Edit
+                </Button>
+                <Button
+                  variant={turf.status === "active" ? "danger" : "accent"}
+                  onClick={() => onToggleStatus(turf)}
+                >
+                  {turf.status === "active" ? "Suspend" : "Activate"}
+                </Button>
+                <Button variant="ghost" onClick={() => onDelete(turf)}>
+                  Delete
+                </Button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ── Desktop table ────────────────────────────────────────── */}
+      <table className="hidden min-w-[760px] w-full text-left text-sm sm:table bg-white">
         <thead className="bg-qt-mist text-xs uppercase tracking-wide text-qt-charcoal/60">
           <tr>
             <th className="px-4 py-3">Name</th>
