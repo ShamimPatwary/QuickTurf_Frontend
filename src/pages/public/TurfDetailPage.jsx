@@ -174,3 +174,100 @@ export default function TurfDetailPage() {
       </div>
     );
   }
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+      <main className="flex-1 mx-auto w-full max-w-4xl px-6 py-10">
+
+        <ImageGallery images={turf.images} />
+
+        <div className="mt-6">
+          <h1 className="font-display text-3xl font-bold text-qt-navy">{turf.name}</h1>
+          <div className="mt-3 flex flex-wrap items-center gap-4 text-sm">
+            {turf.address && (
+              <span className="flex items-center gap-1.5 text-qt-charcoal/70">
+                📍 {turf.address}
+              </span>
+            )}
+          </div>
+          {turf.details && <p className="mt-3 text-qt-charcoal/70">{turf.details}</p>}
+        </div>
+
+        <div className="mt-5">
+          <MapEmbed
+            googleMapLink={turf.google_map_link}
+            latitude={turf.latitude}
+            longitude={turf.longitude}
+            turfName={turf.name}
+          />
+        </div>
+
+        {purchaseSuccess && (
+          <div className="mt-5 rounded-lg bg-qt-green/10 px-4 py-3 text-sm text-qt-green-dark">
+            Membership purchase submitted! It will be activated once the turf verifies your payment.
+          </div>
+        )}
+
+        <div className="mt-8 flex flex-col gap-6">
+          <SportSelector sports={sports} selectedSportId={selectedSportId} onSelect={setSelectedSportId} />
+
+          <div>
+            <label className="text-sm font-medium text-qt-charcoal">Date</label>
+            <input
+              type="date"
+              value={bookingDate}
+              min={todayStr()}
+              onChange={(e) => setBookingDate(e.target.value)}
+              className="mt-1.5 block rounded-lg border border-qt-line px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-qt-green focus:border-qt-green outline-none"
+            />
+          </div>
+
+          {slotsLoading ? (
+            <Loader label="Checking availability..." />
+          ) : (
+            <SlotPicker slots={slots} selectedSlotId={selectedSlotId} onSelect={setSelectedSlotId} />
+          )}
+
+          <Button variant="accent" disabled={!selectedSlot} onClick={handleContinue}>
+            Continue to bookings →
+          </Button>
+
+          {packages.length > 0 && (
+            <div>
+              <h2 className="font-display text-xl font-bold text-qt-navy">Packages</h2>
+              <div className="mt-3"><PackageList packages={packages} /></div>
+            </div>
+          )}
+
+          {memberships.length > 0 && (
+            <div>
+              <h2 className="font-display text-xl font-bold text-qt-navy">Memberships</h2>
+              <p className="mt-1 text-sm text-qt-charcoal/60">
+                Buy a membership and get an automatic discount on every future booking.
+              </p>
+              <div className="mt-3">
+                <MembershipList
+                  memberships={memberships}
+                  onSelectMembership={setPurchaseModalMembership}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+      <Footer />
+
+      <MembershipPurchaseModal
+        open={!!purchaseModalMembership}
+        onClose={() => setPurchaseModalMembership(null)}
+        membership={purchaseModalMembership}
+        turfId={turfId}
+        onSubmit={handlePurchaseSubmit}
+        submitting={purchaseSubmitting}
+      />
+    </div>
+  );
+}
+
+
