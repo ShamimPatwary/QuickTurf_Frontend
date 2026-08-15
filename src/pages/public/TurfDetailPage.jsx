@@ -54,3 +54,36 @@ function ImageGallery({ images }) {
     </div>
   );
 }
+
+function MapEmbed({ googleMapLink, latitude, longitude, turfName }) {
+  if (googleMapLink) {
+    return (
+      <a
+        href={googleMapLink}
+        target="_blank"
+        rel="noreferrer"
+        className="flex items-center gap-2 rounded-lg border border-qt-line bg-qt-mist px-4 py-3 text-sm text-qt-green hover:bg-qt-line transition-colors"
+      >
+        <span className="text-lg">📍</span>
+        <span className="font-medium">Open in Google Maps</span>
+      </a>
+    );
+  }
+  if (latitude && longitude) {
+    const src = `https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed`;
+    return (
+      <div className="overflow-hidden rounded-xl border border-qt-line">
+        <iframe
+          title={`Map of ${turfName}`}
+          src={src}
+          width="100%"
+          height="240"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+        />
+      </div>
+    );
+  }
+  return null;
+}
