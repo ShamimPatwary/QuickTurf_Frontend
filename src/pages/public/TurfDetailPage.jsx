@@ -3,25 +3,25 @@
  * Change: handleContinue now navigates to /turfs/:id/payment-info
  *         instead of /turfs/:id/book, passing the sport name too
  *         so the payment info page can display it.
- * Everything else is identical to the previous version.
+ * Also: "Buy this membership" now navigates to the payment-info page
+ *       (paymentType="membership") instead of opening a modal, so the
+ *       membership purchase flow mirrors the booking flow.
  */
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "../../components/common/Navbar";
-import Footer from "../../components/common/Footer";
 import Loader from "../../components/common/Loader";
 import Button from "../../components/common/Button";
 import SportSelector from "../../components/public/SportSelector";
 import SlotPicker from "../../components/public/SlotPicker";
+import DarkFooter from "../../components/common/DarkFooter";
+import DarkNavbar from "../../components/common/DarkNavbar";
 import { PackageList, MembershipList } from "../../components/public/PackageMembershipList";
-import MembershipPurchaseModal from "../../components/public/MembershipPurchaseModal";
 import {
   getTurfDetail,
   listTurfSports,
   listAvailableSlots,
   listTurfPackages,
   listTurfMemberships,
-  purchaseMembership,
 } from "../../api/publicApi";
 
 function todayStr() {
@@ -102,9 +102,6 @@ export default function TurfDetailPage() {
   const [slotsLoading, setSlotsLoading] = useState(false);
   const [packages, setPackages] = useState([]);
   const [memberships, setMemberships] = useState([]);
-  const [purchaseModalMembership, setPurchaseModalMembership] = useState(null);
-  const [purchaseSubmitting, setPurchaseSubmitting] = useState(false);
-  const [purchaseSuccess, setPurchaseSuccess] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -133,7 +130,7 @@ export default function TurfDetailPage() {
   const selectedSlot = slots.find((s) => s.id === selectedSlotId);
   const selectedSport = sports.find((s) => s.id === selectedSportId);
 
-   // ── KEY CHANGE: go to payment info page first ────────────────
+  // Go to payment info page for a turf slot booking
   const handleContinue = () => {
     if (!selectedSlot) return;
     navigate(`/turfs/${turfId}/payment-info`, {
@@ -143,42 +140,46 @@ export default function TurfDetailPage() {
         sportName: selectedSport?.name ?? "",
         bookingDate,
         slot: selectedSlot,
+        paymentType: "booking",
       },
     });
   };
 
-  const handlePurchaseSubmit = async (formData) => {
-    setPurchaseSubmitting(true);
-    try {
-      await purchaseMembership(turfId, {
-        membership_id: purchaseModalMembership.id,
-        name: formData.name,
-        email: formData.email || null,
-        phone: formData.phone,
-        amount_paid: formData.amount_paid,
-        transaction_id: formData.transaction_id,
-      });
-      setPurchaseModalMembership(null);
-      setPurchaseSuccess(true);
-    } finally {
-      setPurchaseSubmitting(false);
-    }
+// Go to package info / contact page for a package
+  const handleSelectPackage = (pkg) => {
+    navigate(`/package/info`, {
+      state: {
+        turf,
+        package: pkg,
+      },
+    });
+  };
+
+  // Go to payment info page for a membership purchase
+  const handleSelectMembership = (membership) => {
+    navigate(`/turfs/${turfId}/payment-info`, {
+      state: {
+        turf,
+        membership,
+        paymentType: "membership",
+      },
+    });
   };
 
   if (loading) {
     return (
       <div className="flex min-h-screen flex-col">
-        <Navbar />
+        <DarkNavbar />
         <Loader label="Loading turf..." />
-        <Footer />
+        <DarkFooter />
       </div>
     );
   }
 
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar />
-      <main className="flex-1 mx-auto w-full max-w-4xl px-6 py-10">
+      <DarkNavbar />
+      <main className="mt-20 flex-1 mx-auto w-full max-w-4xl px-6 py-10">
 
         <ImageGallery images={turf.images} />
 
@@ -202,12 +203,6 @@ export default function TurfDetailPage() {
             turfName={turf.name}
           />
         </div>
-
-        {purchaseSuccess && (
-          <div className="mt-5 rounded-lg bg-qt-green/10 px-4 py-3 text-sm text-qt-green-dark">
-            Membership purchase submitted! It will be activated once the turf verifies your payment.
-          </div>
-        )}
 
         <div className="mt-8 flex flex-col gap-6">
           <SportSelector sports={sports} selectedSportId={selectedSportId} onSelect={setSelectedSportId} />
@@ -236,7 +231,7 @@ export default function TurfDetailPage() {
           {packages.length > 0 && (
             <div>
               <h2 className="font-display text-xl font-bold text-qt-navy">Packages</h2>
-              <div className="mt-3"><PackageList packages={packages} /></div>
+<div className="mt-3"><PackageList packages={packages} onSelectPackage={handleSelectPackage} /></div>
             </div>
           )}
 
@@ -249,25 +244,14 @@ export default function TurfDetailPage() {
               <div className="mt-3">
                 <MembershipList
                   memberships={memberships}
-                  onSelectMembership={setPurchaseModalMembership}
+                  onSelectMembership={handleSelectMembership}
                 />
               </div>
             </div>
           )}
         </div>
       </main>
-      <Footer />
-
-      <MembershipPurchaseModal
-        open={!!purchaseModalMembership}
-        onClose={() => setPurchaseModalMembership(null)}
-        membership={purchaseModalMembership}
-        turfId={turfId}
-        onSubmit={handlePurchaseSubmit}
-        submitting={purchaseSubmitting}
-      />
+      <DarkFooter />
     </div>
   );
 }
-
-
