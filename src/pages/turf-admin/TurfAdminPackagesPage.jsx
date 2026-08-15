@@ -40,5 +40,11 @@ export default function TurfAdminPackagesPage() {
     loadPackages();
   };
 
-  
+  return (
+    <TurfAdminLayout title="Packages">
+      {loading ? <Loader label="Loading packages..." /> : (
+        <PackageTable packages={packages} sports={sports} onCreate={handleCreate} onDelete={handleDelete} creating={creating} />
+      )}
+    </TurfAdminLayout>
+  );
 }
