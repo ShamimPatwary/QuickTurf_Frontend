@@ -468,6 +468,422 @@ export default function TurfAdminBookingsPage() {
 
 
 
+     
+    
+    
+    
+    
+return (
+
+    <TurfAdminLayout title="Bookings">
+
+
+      {/* ================= FILTER ================= */}
+
+
+      {/* ================= FILTER ================= */}
+
+<div
+  className="
+  mb-6
+  rounded-xl
+  border
+  border-qt-line
+  bg-white
+  p-5
+  "
+>
+
+<div
+    className="
+    flex
+    flex-col
+    sm:flex-row
+    flex-wrap
+    items-stretch
+    sm:items-center
+    justify-between
+    gap-4
+    "
+  >
+
+
+{/* LEFT SIDE FILTERS */}
+
+    <div
+      className="
+      flex
+      flex-col
+      sm:flex-row
+      flex-wrap
+      items-stretch
+      sm:items-center
+      gap-3
+      sm:gap-4
+      w-full
+      sm:w-auto
+      "
+    >
+
+
+{/* FILTER TYPE */}
+
+      <select
+        value={filterType}
+        onChange={handleFilterType}
+        className="
+        rounded-lg
+        border
+        px-3
+        py-2
+        w-full
+        sm:w-auto
+        bg-white
+        "
+      >
+
+        <option value="month">
+          Filter By Month
+        </option>
+
+        <option value="custom">
+          Custom Date Range
+        </option>
+
+      </select>
+
+
+
+
+      {/* MONTH FILTER */}
+
+      {
+        filterType === "month" && (
+
+<input
+            type="month"
+            value={selectedMonth}
+            onChange={(e)=>
+              setSelectedMonth(e.target.value)
+            }
+            className="
+            rounded-lg
+            border
+            px-3
+            py-2
+            w-full
+            sm:w-auto
+            bg-white
+            "
+          />
+
+        )
+      }
+
+
+
+
+
+      {/* CUSTOM DATE FILTER */}
+
+      {
+        filterType === "custom" && (
+
+          <>
+
+<input
+              type="date"
+              value={startDate}
+              onChange={(e)=>
+                setStartDate(e.target.value)
+              }
+              className="
+              rounded-lg
+              border
+              px-3
+              py-2
+              flex-1
+              min-w-[130px]
+              bg-white
+              "
+            />
+
+
+            <span className="text-gray-400">
+              to
+            </span>
+
+
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e)=>
+                setEndDate(e.target.value)
+              }
+              className="
+              rounded-lg
+              border
+              px-3
+              py-2
+              flex-1
+              min-w-[130px]
+              bg-white
+              "
+            />
+
+
+          </>
+
+        )
+      }
+
+
+
+
+
+
+      {/* MATCH STATUS */}
+
+<select
+        value={matchStatusFilter}
+        onChange={(e)=>
+          setMatchStatusFilter(e.target.value)
+        }
+        className="
+        rounded-lg
+        border
+        px-3
+        py-2
+        w-full
+        sm:w-auto
+        bg-white
+        "
+      >
+
+        <option value="all">
+          All Match Status
+        </option>
+
+        <option value="upcoming">
+          Upcoming
+        </option>
+
+        <option value="completed">
+          Completed
+        </option>
+
+        <option value="cancelled">
+          Cancelled
+        </option>
+
+
+      </select>
+
+
+
+
+
+
+
+      {/* PAYMENT STATUS */}
+
+<select
+        value={paymentStatusFilter}
+        onChange={(e)=>
+          setPaymentStatusFilter(e.target.value)
+        }
+        className="
+        rounded-lg
+        border
+        px-3
+        py-2
+        w-full
+        sm:w-auto
+        bg-white
+        "
+      >
+
+        <option value="all">
+          All Payment
+        </option>
+
+        <option value="paid">
+          Full Payment
+        </option>
+
+        <option value="partial">
+          Partial Payment
+        </option>
+
+        <option value="pending">
+          Pending Payment
+        </option>
+
+
+      </select>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    {/* RIGHT SIDE APPLY BUTTON */}
+
+    {
+      filterType === "custom" && (
+
+<button
+
+          onClick={handleCustomApply}
+
+          className="
+          rounded-lg
+          bg-qt-green
+          px-6
+          py-2
+          text-white
+          whitespace-nowrap
+          w-full
+          sm:w-auto
+          "
+
+        >
+
+          Apply
+
+        </button>
+
+      )
+    }
+
+
+
+  </div>
+
+
+
+
+
+
+  {
+    error && (
+
+      <p
+        className="
+        mt-3
+        text-sm
+        text-red-600
+        "
+      >
+
+        {error}
+
+      </p>
+
+    )
+  }
+
+
+
+
+
+  <p
+    className="
+    mt-3
+    text-sm
+    text-gray-500
+    "
+  >
+
+    Showing {filteredBookings.length} bookings
+
+  </p>
+
+
+
+</div>
+
+
+
+
+
+
+
+      {
+        loading ?
+
+        <Loader label="Loading bookings..." />
+
+        :
+
+        <BookingTable
+
+          bookings={filteredBookings}
+
+          onView={handleView}
+
+        />
+
+      }
+
+
+
+
+
+
+
+      <BookingDetailModal
+
+        booking={selectedBooking}
+
+        open={detailOpen}
+
+        onClose={()=>
+          setDetailOpen(false)
+        }
+
+        onAddPayment={handleAddPayment}
+
+        onWhatsapp={handleWhatsapp}
+
+        onMarkStatus={handleMarkStatus}
+
+      />
+
+
+
+
+
+
+
+      <PaymentFormModal
+
+        open={paymentOpen}
+
+        onClose={()=>
+          setPaymentOpen(false)
+        }
+
+        onSubmit={handlePaymentSubmit}
+
+        submitting={submitting}
+
+      />
+
+
+
+    </TurfAdminLayout>
+
+  );
+
+}
+
+
 
 
 
