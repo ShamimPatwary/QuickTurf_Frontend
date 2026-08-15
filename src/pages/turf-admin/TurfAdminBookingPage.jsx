@@ -62,3 +62,47 @@ export default function TurfAdminBookingsPage() {
 
 
 
+
+
+  // ============================
+  // LOAD BOOKINGS
+  // ============================
+
+  const loadBookings = () => {
+
+    setLoading(true);
+
+
+    listTurfAdminBookings()
+
+      .then((res) => {
+
+        setBookings(res.data);
+
+      })
+
+      .finally(() => {
+
+        setLoading(false);
+
+      });
+
+  };
+
+
+
+
+  useEffect(() => {
+
+    loadBookings();
+
+  }, []);
+
+
+
+
+
+
+
+
+
