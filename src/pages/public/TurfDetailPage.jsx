@@ -87,3 +87,48 @@ function MapEmbed({ googleMapLink, latitude, longitude, turfName }) {
   }
   return null;
 }
+
+export default function TurfDetailPage() {
+  const { turfId } = useParams();
+  const navigate = useNavigate();
+
+  const [turf, setTurf] = useState(null);
+  const [sports, setSports] = useState([]);
+  const [selectedSportId, setSelectedSportId] = useState(null);
+  const [bookingDate, setBookingDate] = useState(todayStr());
+  const [slots, setSlots] = useState([]);
+  const [selectedSlotId, setSelectedSlotId] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [slotsLoading, setSlotsLoading] = useState(false);
+  const [packages, setPackages] = useState([]);
+  const [memberships, setMemberships] = useState([]);
+  const [purchaseModalMembership, setPurchaseModalMembership] = useState(null);
+  const [purchaseSubmitting, setPurchaseSubmitting] = useState(false);
+  const [purchaseSuccess, setPurchaseSuccess] = useState(false);
+
+  useEffect(() => {
+    Promise.all([
+      getTurfDetail(turfId),
+      listTurfSports(turfId),
+      listTurfMemberships(turfId),
+    ]).then(([turfRes, sportsRes, membershipsRes]) => {
+      setTurf(turfRes.data);
+      setSports(sportsRes.data);
+      setMemberships(membershipsRes.data);
+      if (sportsRes.data.length > 0) setSelectedSportId(sportsRes.data[0].id);
+      setLoading(false);
+    });
+  }, [turfId]);
+
+  useEffect(() => {
+    if (!selectedSportId || !bookingDate) return;
+    setSlotsLoading(true);
+    setSelectedSlotId(null);
+    listAvailableSlots(turfId, selectedSportId, bookingDate)
+      .then((res) => setSlots(res.data))
+      .finally(() => setSlotsLoading(false));
+    listTurfPackages(turfId, selectedSportId).then((res) => setPackages(res.data));
+  }, [selectedSportId, bookingDate, turfId]);
+
+  const selectedSlot = slots.find((s) => s.id === selectedSlotId);
+  const selectedSport = sports.find((s) => s.id === selectedSportId);
