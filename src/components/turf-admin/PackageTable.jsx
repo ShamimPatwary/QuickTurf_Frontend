@@ -17,3 +17,15 @@ export default function PackageTable({ packages, sports, onCreate, onDelete, cre
         : [...prev.sport_ids, sportId],
     }));
   };
+
+  const handleAdd = (e) => {
+    e.preventDefault();
+    if (!form.name || !form.price || form.sport_ids.length === 0) return;
+    onCreate({
+      name: form.name,
+      description: form.description,
+      price: parseFloat(form.price),
+      sport_ids: form.sport_ids,
+    });
+    setForm({ name: "", description: "", price: "", sport_ids: [] });
+  };
