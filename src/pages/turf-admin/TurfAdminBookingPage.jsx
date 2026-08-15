@@ -308,6 +308,173 @@ export default function TurfAdminBookingsPage() {
 
 
 
+  
+  
+  
+  
+  
+  // ============================
+  // BOOKING ACTIONS
+  // ============================
+
+
+  const handleView = (booking)=>{
+
+
+    setSelectedBooking(booking);
+
+    setDetailOpen(true);
+
+
+  };
+
+
+
+
+
+  const refreshSelected = async(id)=>{
+
+
+    const res =
+      await getTurfAdminBooking(id);
+
+
+    setSelectedBooking(res.data);
+
+
+    loadBookings();
+
+
+  };
+
+
+
+
+
+  const handleAddPayment = ()=>{
+
+
+    setPaymentOpen(true);
+
+
+  };
+
+
+
+
+
+  const handlePaymentSubmit =
+    async(
+      amount,
+      method,
+      transactionId
+    )=>{
+
+
+    setSubmitting(true);
+
+
+    try {
+
+
+      await addBookingPayment(
+
+        selectedBooking.id,
+
+        amount,
+
+        method || null,
+
+        transactionId || null
+
+      );
+
+
+
+      setPaymentOpen(false);
+
+
+
+      await refreshSelected(
+        selectedBooking.id
+      );
+
+
+    }
+
+    finally {
+
+
+      setSubmitting(false);
+
+
+    }
+
+
+  };
+
+
+
+
+
+
+  const handleWhatsapp =
+    async(booking)=>{
+
+
+      const res =
+        await confirmBookingWhatsapp(
+          booking.id
+        );
+
+
+      window.open(
+        res.data.whatsapp_link,
+        "_blank"
+      );
+
+
+    };
+
+
+
+
+
+
+  const handleMarkStatus =
+    async(
+      booking,
+      status
+    )=>{
+
+
+      await updateBooking(
+
+        booking.id,
+
+        {
+          status
+        }
+
+      );
+
+
+      await refreshSelected(
+        booking.id
+      );
+
+
+    };
+
+
+
+
+
+
+
+
+
+
 
 
 
