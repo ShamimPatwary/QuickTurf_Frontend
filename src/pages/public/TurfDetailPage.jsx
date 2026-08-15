@@ -132,3 +132,17 @@ export default function TurfDetailPage() {
 
   const selectedSlot = slots.find((s) => s.id === selectedSlotId);
   const selectedSport = sports.find((s) => s.id === selectedSportId);
+
+   // ── KEY CHANGE: go to payment info page first ────────────────
+  const handleContinue = () => {
+    if (!selectedSlot) return;
+    navigate(`/turfs/${turfId}/payment-info`, {
+      state: {
+        turf,
+        sportId: selectedSportId,
+        sportName: selectedSport?.name ?? "",
+        bookingDate,
+        slot: selectedSlot,
+      },
+    });
+  };
