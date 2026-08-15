@@ -7,7 +7,7 @@
  *    turf name instead of the generic "QuickTurf / Turf Admin" text.
  *  - Falls back gracefully when the image isn't set yet.
  */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTurfAdminAuth } from "../../context/TurfAdminAuthContext";
 import { getMyTurf } from "../../api/turfAdminApi";
@@ -23,12 +23,18 @@ const navItems = [
   { to: "/turf-admin/settings",    label: "Settings" },
 ];
 
+// Precise active matching so that e.g. /turf-admin/members is NOT treated as
+// active when we are on /turf-admin/memberships (and vice-versa).
+const isActive = (pathname, to) =>
+  pathname === to || pathname.startsWith(to + "/");
+
 export default function TurfAdminLayout({ children, title }) {
   const { logout } = useTurfAdminAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
   const [turf, setTurf] = useState(null);
+  const activeNavRef = useRef(null);
 
   useEffect(() => {
     getMyTurf()
@@ -36,12 +42,20 @@ export default function TurfAdminLayout({ children, title }) {
       .catch(() => {}); // silently ignore if the call fails
   }, []);
 
+  // Keep the active (highlighted) item visible in the horizontally
+  // scrollable mobile nav bar instead of letting it reset to the start.
+  useEffect(() => {
+    if (activeNavRef.current) {
+      activeNavRef.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
+  }, [location.pathname]);
+
   const handleLogout = () => {
     logout();
     navigate("/turf-admin/login");
   };
 
-   const logoUrl = turf?.images?.[0]?.image_url ?? null;
+  const logoUrl = turf?.images?.[0]?.image_url ?? null;
 
   return (
     <div className="flex min-h-screen bg-qt-mist">
@@ -97,31 +111,51 @@ export default function TurfAdminLayout({ children, title }) {
         </button>
       </aside>
 
-      {/* ── Mobile top bar (turf name only, no sidebar) ─────────── */}
+{/* ── Mobile top bar (turf name only, no sidebar) ─────────── */}
       <div className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between border-b border-qt-line bg-white px-4 py-3 sm:hidden">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 min-w-0">
           {logoUrl ? (
-            <img src={logoUrl} alt="" className="h-8 w-8 rounded-md object-cover border border-qt-line" />
+            <img src={logoUrl} alt="" className="h-8 w-8 rounded-md object-cover border border-qt-line flex-shrink-0" />
           ) : (
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-qt-navy text-white text-xs font-bold">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-qt-navy text-white text-xs font-bold flex-shrink-0">
               {turf?.name?.[0]?.toUpperCase() ?? "T"}
             </div>
           )}
-          <span className="font-display text-sm font-bold text-qt-navy">
+          <span className="font-display text-sm font-bold text-qt-navy truncate">
             {turf?.name ?? "Turf Admin"}
           </span>
         </div>
-        <button onClick={handleLogout} className="text-xs font-medium text-qt-red">
+        <button onClick={handleLogout} className="text-xs font-medium text-qt-red whitespace-nowrap">
           Log out
         </button>
       </div>
 
+      {/* ── Mobile nav links ────────────────────────────────────── */}
+<div className="fixed top-14 left-0 right-0 z-30 flex items-center gap-2 overflow-x-auto border-b border-qt-line bg-white px-4 py-2 sm:hidden">
+        {navItems.map((item) => {
+          const active = isActive(location.pathname, item.to);
+          return (
+            <Link
+              key={item.to}
+              to={item.to}
+              ref={active ? activeNavRef : null}
+              className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+                active
+                  ? "bg-qt-green text-white"
+                  : "text-qt-charcoal hover:bg-qt-mist"
+              }`}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </div>
+
       {/* ── Main content ────────────────────────────────────────── */}
-      <main className="flex-1 px-6 py-8 pt-20 sm:pt-8 sm:px-10">
+      <main className="flex-1 px-6 py-8 pt-28 sm:pt-8 sm:px-10">
         <h1 className="font-display text-2xl font-bold text-qt-navy">{title}</h1>
         <div className="mt-6">{children}</div>
       </main>
     </div>
   );
 }
-

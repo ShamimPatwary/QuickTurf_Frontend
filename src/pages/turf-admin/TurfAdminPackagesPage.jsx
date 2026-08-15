@@ -20,4 +20,16 @@ export default function TurfAdminPackagesPage() {
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => 
+   useEffect(() => {
+    loadPackages();
+  }, []);
+
+  const handleCreate = async (data) => {
+    setCreating(true);
+    try {
+      await createPackage(data);
+      loadPackages();
+    } finally {
+      setCreating(false);
+    }
+  };
