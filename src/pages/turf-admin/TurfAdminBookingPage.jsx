@@ -162,6 +162,157 @@ export default function TurfAdminBookingsPage() {
 
 
     }
+    
+    
+    
+    
+    // CUSTOM DATE FILTER
+
+
+    if(
+      filterType === "custom" &&
+      startDate &&
+      endDate
+    ) {
+
+
+      result = result.filter((booking)=>{
+
+
+        return (
+
+          booking.booking_date >= startDate &&
+
+          booking.booking_date <= endDate
+
+        );
+
+
+      });
+
+
+    }
+
+
+
+
+
+
+    // MATCH STATUS
+
+
+    if(matchStatusFilter !== "all") {
+
+
+      result = result.filter((booking)=>
+
+        booking.status === matchStatusFilter
+
+      );
+
+
+    }
+
+
+
+
+
+
+
+    // PAYMENT STATUS
+
+
+    if(paymentStatusFilter !== "all") {
+
+
+      result = result.filter((booking)=>
+
+        booking.payment_status === paymentStatusFilter
+
+      );
+
+
+    }
+
+
+
+
+    setFilteredBookings(result);
+
+
+  };
+
+
+
+
+
+
+
+
+
+  // ============================
+  // FILTER HANDLERS
+  // ============================
+
+
+  const handleFilterType = (e)=>{
+
+
+    setFilterType(e.target.value);
+
+    setError("");
+
+  };
+
+
+
+
+
+  const handleCustomApply = ()=>{
+
+
+    if(!startDate || !endDate){
+
+
+      setError(
+        "Please select both start date and end date"
+      );
+
+
+      return;
+
+    }
+
+
+
+    if(endDate < startDate){
+
+
+      setError(
+        "End date cannot be before start date"
+      );
+
+
+      return;
+
+    }
+
+
+
+    setError("");
+
+    applyFilters();
+
+
+  };
+
+
+
+
+
+
+
+
 
 
 
