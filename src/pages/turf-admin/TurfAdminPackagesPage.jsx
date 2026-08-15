@@ -33,3 +33,9 @@ export default function TurfAdminPackagesPage() {
       setCreating(false);
     }
   };
+
+   const handleDelete = async (packageId) => {
+    if (!window.confirm("Delete this package?")) return;
+    await deletePackage(packageId);
+    loadPackages();
+  };
