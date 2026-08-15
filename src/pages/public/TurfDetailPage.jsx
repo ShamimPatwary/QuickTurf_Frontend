@@ -146,3 +146,31 @@ export default function TurfDetailPage() {
       },
     });
   };
+
+  const handlePurchaseSubmit = async (formData) => {
+    setPurchaseSubmitting(true);
+    try {
+      await purchaseMembership(turfId, {
+        membership_id: purchaseModalMembership.id,
+        name: formData.name,
+        email: formData.email || null,
+        phone: formData.phone,
+        amount_paid: formData.amount_paid,
+        transaction_id: formData.transaction_id,
+      });
+      setPurchaseModalMembership(null);
+      setPurchaseSuccess(true);
+    } finally {
+      setPurchaseSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen flex-col">
+        <Navbar />
+        <Loader label="Loading turf..." />
+        <Footer />
+      </div>
+    );
+  }
