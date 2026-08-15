@@ -98,6 +98,71 @@ export default function TurfAdminBookingsPage() {
 
   }, []);
 
+   
+  
+  
+  
+  
+  // ============================
+  // APPLY FILTER AUTOMATICALLY
+  // ============================
+
+
+  useEffect(() => {
+
+    applyFilters();
+
+  }, [
+    bookings,
+    filterType,
+    selectedMonth,
+    startDate,
+    endDate,
+    matchStatusFilter,
+    paymentStatusFilter
+  ]);
+
+
+
+
+
+
+
+  // ============================
+  // FILTER FUNCTION
+  // ============================
+
+
+  const applyFilters = () => {
+
+
+    let result = [...bookings];
+
+
+
+    // MONTH FILTER
+
+    if(filterType === "month") {
+
+
+      result = result.filter((booking)=>{
+
+
+        if(!booking.booking_date)
+          return false;
+
+
+        return (
+          booking.booking_date.slice(0,7)
+          === selectedMonth
+        );
+
+
+      });
+
+
+    }
+
 
 
 
