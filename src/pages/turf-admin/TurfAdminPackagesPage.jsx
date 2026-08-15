@@ -20,7 +20,7 @@ export default function TurfAdminPackagesPage() {
       .finally(() => setLoading(false));
   };
 
-   useEffect(() => {
+  useEffect(() => {
     loadPackages();
   }, []);
 
@@ -34,13 +34,13 @@ export default function TurfAdminPackagesPage() {
     }
   };
 
-   const handleDelete = async (packageId) => {
+  const handleDelete = async (packageId) => {
     if (!window.confirm("Delete this package?")) return;
     await deletePackage(packageId);
     loadPackages();
   };
 
-   return (
+  return (
     <TurfAdminLayout title="Packages">
       {loading ? <Loader label="Loading packages..." /> : (
         <PackageTable packages={packages} sports={sports} onCreate={handleCreate} onDelete={handleDelete} creating={creating} />
@@ -48,6 +48,3 @@ export default function TurfAdminPackagesPage() {
     </TurfAdminLayout>
   );
 }
-
-
- 
